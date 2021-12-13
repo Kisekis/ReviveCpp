@@ -1,34 +1,50 @@
 #include <iostream>
+#include <fstream>
 #include "Revive.h"
 #define THRESHOLD (float)1 / 2
 using namespace osuCrypto;
 
+const pair<pair<int,int>, double> graph[] = {
+        {{0,1},100},
+        {{0,2},0},
+        {{0,2},0},
+        {{1,0},0},
+        {{1,2},100},
+        {{2,3},100},
+        {{2,1},20},
+        {{3,0},100},
+        {{3,2},0},
+        {{0,3},40},
+
+};
+
+
 Revive::Revive()
 {
+    initialize();
+
+
+    print();
+    clock_t start,end;
+    start = clock();
+    rebalance();
+    end = clock();
+    print();
+    cout<<"total time : "<<end-start<<"ms"<<endl;
+}
+
+void Revive::initialize() {
     IOService ios(4);
-    Participant A("A", 0, 1213, &ios);
-    pars.push_back(A);
-    Participant B("B", 1, 1214, &ios);
-    pars.push_back(B);
-    Participant C("C", 2, 1215, &ios);
-    pars.push_back(C);
-    Participant D("D", 3, 1215, &ios);
-    pars.push_back(D);
-    TransactionChannel AB(A, B, 100, 0);
-    channels.push_back(AB);
-    TransactionChannel BC(B, C, 100, 0);
-    channels.push_back(BC);
-    TransactionChannel CD(C, D, 100, 0);
-    channels.push_back(CD);
-    TransactionChannel DA(D, B, 100, 30);
-    channels.push_back(DA);
-    bool requestSuccess = sendRequest();
-    if (requestSuccess)
-    {
-        print();
-        rebalance();
-        print();
+    //createParticipants
+    for(auto tc : graph) {
+        int index = tc.first.first;
+        if(pars.size()<index+1) {
+            Participant p("p"+to_string(index),index,1213+index,&ios);
+            pars.push_back(p);
+        }
+        pars[index].addPaymentChannel(tc);
     }
+    bool mark = sendRequest();
 }
 
 int Revive::genLeader()
@@ -62,11 +78,13 @@ bool Revive::sendRequest()
             leader.recvRequest();
         }
     }
-    if ((float)leader.getRecvCount() / pars.size() > THRESHOLD)
+    if ((float)leader.getRecvCount() / pars.size() < THRESHOLD)
     {
-        return true;
+        return false;
     }
-    return false;
+
+    this->channels = *leader.generateTransactionChannels();
+    return true;
 }
 void Revive::rebalance()
 {
@@ -113,11 +131,11 @@ void Revive::rebalance()
             count = n * (i - 1) + j;
             ia[count] = i;
             ja[count] = j;
-            if (channels[j - 1].get_u().getIndex() + 1 == i)
+            if (channels[j - 1].get_u() + 1 == i)
             {
                 ar[count] = 1;
             }
-            else if (channels[j - 1].get_v().getIndex() + 1 == i)
+            else if (channels[j - 1].get_v() + 1 == i)
             {
                 ar[count] = -1;
             }
@@ -142,6 +160,7 @@ output:
         }
     }
 }
+
 
 int main()
 {

@@ -1,10 +1,11 @@
 #pragma once
 #include "Participant.h"
 #include <vector>
+using namespace std;
 class TransactionChannel
 {
 private:
-    vector<Participant> p;
+    vector<int> p;
     double u_bal;
     double v_bal;
 
@@ -16,8 +17,8 @@ private:
     bool Agreed = false;
 
 public:
-    TransactionChannel(Participant u, Participant v, double u_bal, double v_bal)
-        : p(vector<Participant>({u, v}))
+    TransactionChannel(int u, int v, double u_bal, double v_bal)
+        : p(vector<int>({u, v}))
     {
         this->u_bal = u_bal;
         this->v_bal = v_bal;
@@ -54,7 +55,7 @@ public:
 
     void print()
     {
-        cout << p[0].getName() << " : " << u_bal << " " << p[1].getName() << " : " << v_bal << endl;
+        cout << 'p'+to_string(p[0]) << " : " << u_bal << " " << 'p'+to_string(p[1]) << " : " << v_bal << endl;
     }
 
     void setdelta(double delta)
@@ -75,12 +76,18 @@ public:
         return Delta_v_u;
     }
 
-    Participant get_u()
+    int get_u()
     {
         return p[0];
     }
-    Participant get_v()
+    int get_v()
     {
         return p[1];
+    }
+    double get_u_bal() {
+        return u_bal;
+    }
+    double get_v_bal() {
+        return v_bal;
     }
 };
