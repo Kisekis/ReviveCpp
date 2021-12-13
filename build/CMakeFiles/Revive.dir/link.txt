@@ -1,0 +1,1 @@
+/usr/bin/x86_64-linux-gnu-g++-8 -O2 -g -DNDEBUG -pthread CMakeFiles/Revive.dir/Revive.cpp.o -o Revive  /usr/local/lib/libcryptoTools.a -lglpk /usr/local/lib/librelic_s.a /usr/local/lib/libboost_system.a /usr/local/lib/libboost_thread.a -lpthread /usr/local/lib/libboost_regex.a 

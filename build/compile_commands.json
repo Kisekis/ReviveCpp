@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/cs144/revivecpp/build",
+  "command": "/usr/bin/x86_64-linux-gnu-g++-8 -DBOOST_ALL_NO_LIB  -O2 -g -DNDEBUG -std=c++14 -pthread -maes -msse2 -msse3 -mssse3 -msse4.1 -mpclmul -o CMakeFiles/Revive.dir/Revive.cpp.o -c /home/cs144/revivecpp/Revive.cpp",
+  "file": "/home/cs144/revivecpp/Revive.cpp"
+}
+]
