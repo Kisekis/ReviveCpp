@@ -26,7 +26,7 @@ Revive::Revive()
     if (requestSuccess)
     {
         print();
-        rebanlance();
+        rebalance();
         print();
     }
 }
@@ -68,7 +68,7 @@ bool Revive::sendRequest()
     }
     return false;
 }
-void Revive::rebanlance()
+void Revive::rebalance()
 {
     glp_prob *lp;
     lp = glp_create_prob();

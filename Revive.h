@@ -16,7 +16,7 @@ public:
 
     vector<Participant> getParticipants() { return pars; }
 
-    void rebanlance();
+    void rebalance();
 
     bool sendRequest();
 
